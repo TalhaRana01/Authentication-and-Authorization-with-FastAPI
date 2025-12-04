@@ -1,6 +1,7 @@
 from app.account.models import User, RefreshToken, UserCreate, UserOut
 from sqlmodel import Session, select
 from fastapi import HTTPException
+from app.account.auth import hash_password
 
 
 
@@ -15,7 +16,7 @@ def create_user(session: Session, user: UserCreate):
   new_user = User(
       name=user.name,
       email=user.email,
-      hashed_password=user.password,
+      hashed_password=hash_password(user.password),
       is_verified=False
       
       
