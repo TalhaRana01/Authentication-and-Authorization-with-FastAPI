@@ -12,7 +12,7 @@ router = APIRouter(prefix="/account", tags=["Account"])
 
 
 # Register User Route
-@router.post("/regiser", response_model=UserOut)
+@router.post("/register", response_model=UserOut)
 async def user_register(session: SessionDep, user: UserCreate):
   return create_user(session, user)
 
