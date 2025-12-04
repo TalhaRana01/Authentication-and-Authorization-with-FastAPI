@@ -19,7 +19,7 @@ class UserOut(UserBase):
 # User Table in Database
 class User(UserBase, table=True):
   __table_args__ = (UniqueConstraint("email"), )
-  id: int = Field(primary_key=True)
+  id: int | None = Field(default=None, primary_key=True)
   hashed_password: str
   is_verified: bool = False
   created_at: datetime = Field(default_factory=lambda:datetime.now(timezone.utc))
@@ -28,7 +28,7 @@ class User(UserBase, table=True):
 
 # Refresh Token Table in Database
 class RefreshToken(SQLModel, table=True):
-  id: int = Field(default_factory=None, primary_key=True)
+  id: int | None = Field(default_factory=None, primary_key=True)
   user_id: int = Field(foreign_key="user.id")
   token : str
   expires_at : datetime
