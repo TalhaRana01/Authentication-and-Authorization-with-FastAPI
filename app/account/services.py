@@ -10,7 +10,7 @@ def create_user(session: Session, user: UserCreate):
   isEmailExist = select(User).where(User.email == user.email) 
   
   if session.exec(isEmailExist).first():
-    raise HTTPException(status_code=400, detail="Email Already Exist")
+      raise HTTPException(status_code=400, detail="Email Already Exist")
   
     # function parameters
   new_user = User(
