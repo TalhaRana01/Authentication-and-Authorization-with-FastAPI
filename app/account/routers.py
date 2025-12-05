@@ -5,6 +5,7 @@ from app.db.config import SessionDep
 from fastapi.security import OAuth2PasswordRequestForm
 from app.account.auth import create_tokens, verify_refresh_token, revoke_refresh_token
 from fastapi.responses import JSONResponse
+from app.account.dependencies import get_current_user
 import os
 
 router = APIRouter(prefix="/account", tags=["Account"])
@@ -72,6 +73,12 @@ async def refresh_token(session: SessionDep, request: Request):
         max_age=7 * 24 * 60 * 60
     )
     return response
+
+
+@router.get("/me", response_model=UserOut)
+def me(user = Depends(get_current_user)):
+    return user
+
 
 
 @router.post("/logout")

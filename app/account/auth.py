@@ -110,6 +110,14 @@ def cleanup_expired_tokens(session: Session) -> int:
     return len(expired_tokens)
 
 
+def decode_token(token: str):
+    
+    try:
+        return jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM )
+    except JWTError:
+        return None 
+
+
 # from app.account.models import User, UserCreate
 # from sqlmodel import Session, select
 # from fastapi import HTTPException
