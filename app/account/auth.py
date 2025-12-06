@@ -117,6 +117,25 @@ def decode_token(token: str):
     except JWTError:
         return None 
 
+def create_email_verification_token(user_id: int):
+    expire = datetime.now(timezone.utc) + timedelta(hours=1)
+    to_encode = {"sub" : str(user_id), "type": "verify", "exp" : expire}
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+
+
+def verify_token_and_get_user_id(token : str, token_type: str):
+    try:
+        payload = decode_token(token)
+        if payload.get("type") != "token_type":
+            return None
+        return int(payload.get("sub"))
+    except JWTError:
+        return None
+        
+    
+    
+
 
 # from app.account.models import User, UserCreate
 # from sqlmodel import Session, select
