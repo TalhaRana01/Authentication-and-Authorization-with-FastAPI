@@ -113,7 +113,7 @@ def cleanup_expired_tokens(session: Session) -> int:
 def decode_token(token: str):
     
     try:
-        return jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM )
+        return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM] )
     except JWTError:
         return None 
 
@@ -127,7 +127,7 @@ def create_email_verification_token(user_id: int):
 def verify_token_and_get_user_id(token : str, token_type: str):
     try:
         payload = decode_token(token)
-        if payload.get("type") != "token_type":
+        if not payload or payload.get("type") != token_type:
             return None
         return int(payload.get("sub"))
     except JWTError:
