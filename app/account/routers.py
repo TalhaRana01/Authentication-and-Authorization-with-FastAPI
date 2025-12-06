@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
-from app.account.services import create_user, authenticate_user, email_verification, verify_email_token, change_password, passwoord_reset_process
+from app.account.services import create_user, authenticate_user, email_verification, verify_email_token, change_password, passwoord_reset_process, reset_password_with_token
 from app.account.models import UserCreate, UserOut
 from app.db.config import SessionDep
 from fastapi.security import OAuth2PasswordRequestForm
@@ -109,6 +109,11 @@ def password_changed(session: SessionDep, new_password: str, user= Depends(get_c
 @router.post("/forget-password")
 def forget_password(session: SessionDep, email : str):
     return passwoord_reset_process(session, email)
+
+
+@router.post("/reset-password")
+def reset_password(session : SessionDep, token: str, new_password:str):
+    return reset_password_with_token(session, token, new_password)
     
 
     

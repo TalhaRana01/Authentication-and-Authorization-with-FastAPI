@@ -86,7 +86,8 @@ def reset_password_with_token(session: Session, token : str, new_password : str 
   user = session.exec(stmt).first()
   if not user:
     raise HTTPException(status_code=404, detail="User not found")
-  
+  change_password(session, user, new_password)
+  return {"message" : "Password Reset Successfully"}
     
   
   
