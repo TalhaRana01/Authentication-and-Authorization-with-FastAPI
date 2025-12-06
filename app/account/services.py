@@ -36,13 +36,14 @@ def authenticate_user(session: Session, email : str, password : str):
     return None
   return user
 
-
+# Email verification Logic
 def email_verification(user: User):
   token = create_email_verification_token(user.id)
   link = f"http://localhost:8000/account/verify?token={token}"
   print(f"Verify your email:{link} ")
   return { "msg" : "Verification email sent"}
 
+# Email Verified Logic
 def verify_email_token(session: Session, token : str):
   user_id = verify_token_and_get_user_id(token, "verify")
   if not user_id:
@@ -55,6 +56,14 @@ def verify_email_token(session: Session, token : str):
   session.add(user)
   session.commit()
   return { "msg" : "Email Verified Successfully"}
+
+
+# Change Password Logic
+def change_password(session: Session, user: User, new_password: str):
+  
+  user.hashed_password = hash_password(new_password)
+  session.add(user)
+  session.commit()
   
 
   
